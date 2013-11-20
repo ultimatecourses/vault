@@ -4,7 +4,7 @@ window.Vault = (function (window, document, undefined) {
 
   return {
     set: function (type, key, value) {
-      var store = 'local' ? localStorage : sessionStorage;
+      var store = type === 'local' ? localStorage : sessionStorage;
       if (!key || !value) return;
       store.setItem(key, JSON.stringify(value));
     },
