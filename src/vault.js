@@ -2,9 +2,9 @@ window.Vault = (function (window, document, undefined) {
 
   'use strict';
 
-  function getStore(type) {
+  var getStore = function (type) {
     return type === 'local' ? localStorage : sessionStorage;
-  }
+  };
 
   return {
     set: function (type, key, value) {
