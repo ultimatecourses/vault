@@ -30,7 +30,7 @@
     },
 
     jasmine : {
-      src : 'dist/**/*.js',
+      src : 'src/**/*.js',
       options : {
         specs : 'test/**/*.js'
       }
@@ -93,28 +93,17 @@
     }
   });
 
+  grunt.registerTask('default', [
+    'clean',
+    'jshint',
+    'concat',
+    'uglify',
+    'jasmine'
+  ]);
 
-    /**
-     * Default Task
-     * run `grunt`
-     */
-     grunt.registerTask('default', [
-      'clean',
-      'jshint',
-      'concat',
-      'uglify',
-      'jasmine'
-    ]);
+  grunt.registerTask('travis', [
+    'jshint',
+    'jasmine'
+  ]);
 
-
-    /**
-     * Create test server
-     * run `grunt test`
-     */
-     grunt.registerTask('test', [
-      'clean:test',
-      'copy:test',
-      'connect:test'
-    ]);
-
-   };
+};
