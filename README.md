@@ -1,6 +1,6 @@
 # Vault.js [![Build Status](https://travis-ci.org/toddmotto/vault.png)](https://travis-ci.org/toddmotto/vault)
 
-Vault is a 0.6KB standalone HTML5 (local/session) Web Storage API with automatic JSON support. Web Storage only accepts a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects using JSON when setting/getting. It also abstracts the storage APIs for both `localStorage` and `sessionStorage`, making it easy to work with both simultaneously.
+Vault is a 0.4KB standalone HTML5 (local/session) Web Storage API with automatic JSON support. Web Storage only accepts a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects using JSON when setting/getting. It also abstracts the storage APIs for both `localStorage` and `sessionStorage`, making it easy to work with both simultaneously.
 
 IE8 supports Web Storage, therefore Vault can be used with IE8+, but note browser storage limitations in IE8 compared to modern browsers.
 
