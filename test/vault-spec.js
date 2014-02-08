@@ -19,7 +19,7 @@ describe('vault', function () {
 
     it('should add a property to window.localStorage', function () {
       expect(window.localStorage.localTestStringProp).toBeDefined();
-      expect(window.localStorage.localTestObjectProp).toBeDefined();
+      expect(window.localStorage.localTestObjectProp).not.toBeDefined();
     });
 
     it('should add a property to window.sessionStorage', function () {
