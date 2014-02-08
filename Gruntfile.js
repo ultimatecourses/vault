@@ -1,104 +1,120 @@
-/*
- * Gruntfile.js
- * @author Todd Motto
- * @version 1.0.0
- */
-
 'use strict';
 
-var LIVERELOAD_PORT = 35729;
-
-var lrSnippet = require('connect-livereload')({
-  port: LIVERELOAD_PORT
-});
-
-var mountFolder = function (connect, dir) {
-  return connect.static(require('path').resolve(dir));
-};
-
-module.exports = function (grunt) {
+/**
+ * Grunt setup
+ */
+ module.exports = function(grunt) {
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
+
     pkg: grunt.file.readJSON('package.json'),
-    project: { name: 'vault' },
-    connect: {
+
+    project: {
+      src: 'src',
+      filename: 'vault',
+      dist: 'dist',
+      test: 'test',
+      core: ['<%= project.src %>/<%= project.filename %>.js']
+    },
+
+    banner: '/*! <%= pkg.title %> v<%= pkg.version %> | (c) <%= grunt.template.today(\'yyyy\') %> @toddmotto | MIT license | <%= pkg.homepage %> */\n',
+
+    jshint: {
+      gruntfile: 'Gruntfile.js',
+      files: ['<%= project.core %>'],
       options: {
-        port: 9000,
-        hostname: 'localhost'
+        jshintrc: '.jshintrc'
+      }
+    },
+
+    jasmine : {
+      src : 'dist/**/*.js',
+      options : {
+        specs : 'test/**/*.js'
+      }
+    },
+
+    concat: {
+      dist: {
+        src: ['<%= project.core %>'],
+        dest: '<%= project.dist %>/<%= project.filename %>.js',
       },
-      livereload: {
+      options: {
+        stripBanners: true,
+        banner: '<%= banner %>'
+      }
+    },
+
+    uglify: {
+      options: {
+        banner: '<%= banner %>'
+      },
+      dist: {
+        src: '<%= project.dist %>/<%= project.filename %>.js',
+        dest: '<%= project.dist %>/<%= project.filename %>.min.js'
+      },
+    },
+
+    clean: {
+      dist: [ 'dist' ]
+      // test: [ '<%= project.test %>/<%= project.filename %>.js' ]
+    },
+
+    copy: {
+      test: {
+        src: '<%= project.src %>/<%= project.filename %>.js',
+        dest: '<%= project.test %>/<%= project.filename %>.js',
+      },
+    },
+
+    connect: {
+      test: {
         options: {
-          middleware: function (connect) {
-            return [lrSnippet, mountFolder(connect, 'dist')];
-          }
+          port: 9000,
+          hostname: '*',
+          open: true,
+          keepalive: true,
+          base: 'test'
         }
       }
     },
-    tag: {
-      banner: '/*!\n' +
-              ' *  <%= pkg.name %> v<%= pkg.version %>\n' +
-              ' *  <%= pkg.description %>\n' +
-              ' *  Project: <%= pkg.homepage %>\n' +
-              ' *  by <%= pkg.author.name %>: <%= pkg.author.url %>\n' +
-              ' *  Copyright.' +
-              ' <%= pkg.licenses[0].type %> licensed.\n' +
-              ' */\n'
-    },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      files: 'src/<%= project.name %>.js',
-    },
-    concat: {
-      dist: {
-        src: ['src/<%= project.name %>.js'],
-        dest: 'dist/<%= project.name %>.js'
-      },
-      options: {
-        banner: '<%= tag.banner %>'
-      }
-    },
-    uglify: {
-      files: {
-        src: ['dist/<%= project.name %>.js'],
-        dest: 'dist/<%= project.name %>.min.js'
-      },
-      options: {
-        banner: '<%= tag.banner %>'
-      }
-    },
-    open: {
-      server: {
-        path: 'http://localhost:<%= connect.options.port %>'
-      }
-    },
+
     watch: {
-      concat: {
-        files: 'src/{,*/}*.js',
-        tasks: ['concat:dist', 'uglify']
+      gruntfile: {
+        files: 'Gruntfile.js',
+        tasks: ['jshint:gruntfile'],
       },
-      livereload: {
-        options: {
-          livereload: LIVERELOAD_PORT
-        },
-        files: [
-          '{,*/}*.html',
-          'dist/{,*/}*.js'
-        ]
+      js: {
+        files: '<%= jshint.files %>',
+        tasks: ['jshint', 'uglify'],
       }
     }
   });
 
-  grunt.registerTask('default' , [
-    'jshint',
-    'concat:dist',
-    'uglify',
-    'connect:livereload',
-    'open',
-    'watch'
-  ]);
 
-};
+    /**
+     * Default Task
+     * run `grunt`
+     */
+     grunt.registerTask('default', [
+      'clean',
+      'jshint',
+      'concat',
+      'uglify',
+      'jasmine'
+    ]);
+
+
+    /**
+     * Create test server
+     * run `grunt test`
+     */
+     grunt.registerTask('test', [
+      'clean:test',
+      'copy:test',
+      'connect:test'
+    ]);
+
+   };
