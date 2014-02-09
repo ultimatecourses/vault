@@ -67,8 +67,8 @@ describe('vault', function () {
     it('should remove storage properties', function () {
       expect(Vault.get('local', 'localTestStringProp')).not.toBeDefined();
       expect(Vault.get('local', 'localTestObjectProp')).not.toBeDefined();
-      expect(Vault.get('session', 'localTestStringProp')).not.toBeDefined();
-      expect(Vault.get('session', 'localTestObjectProp')).not.toBeDefined();
+      expect(Vault.get('session', 'sessionTestStringProp')).not.toBeDefined();
+      expect(Vault.get('session', 'sessionTestObjectProp')).not.toBeDefined();
     });
 
   });
