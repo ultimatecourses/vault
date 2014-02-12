@@ -87,8 +87,8 @@ Drop your files into your required folders, make sure you're using the files fro
 	
 ```html
 <body>
-	<!-- html content above -->
-	<script src="dist/vault.js"></script>
+  <!-- html content above -->
+  <script src="dist/vault.js"></script>
   <script>
   Vault.set('local', 'name', 'Tom Delonge');
   </script>
