@@ -104,6 +104,8 @@ Project files and folder structure.
 │   └── vault.min.js
 ├── src/
 │   └── vault.js
+├── test/
+│   └── vault-spec.js
 ├── .editorconfig
 ├── .gitignore
 ├── .jshintrc
