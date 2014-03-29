@@ -1,11 +1,11 @@
 # Vault.js [![Build Status](https://travis-ci.org/toddmotto/vault.png)](https://travis-ci.org/toddmotto/vault)
 
-Vault is a 0.4KB standalone HTML5 (local/session) Web Storage API with automatic JSON support. Web Storage only accepts a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects using JSON when setting/getting. It also abstracts the storage APIs for both `localStorage` and `sessionStorage`, making it easy to work with both simultaneously.
+Vault is a 0.4KB standalone localStorage API with automatic JSON support. By default, localStorage only accepts a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects using JSON parsing. Vault uses a faster Object lookup than the suggested API methods.
 
-IE8 supports Web Storage, therefore Vault can be used with IE8+, but note browser storage limitations in IE8 compared to modern browsers.
+IE8 supports localStorage, therefore Vault can be used with IE8+, but note browser storage limitations in IE8 compared to modern browsers.
 
 ### Storing Objects
-Vault allows you to automatically store JavaScript Objects and not just strings (default Web Storage behaviour), allowing you to do the following:
+Vault allows you to automatically store JavaScript Objects and not just strings (default localStorage behaviour), allowing you to do the following:
 
 ```javascript
 var blink182 = {
@@ -13,11 +13,11 @@ var blink182 = {
   formed: 'California',
   members: ['Tom Delonge', 'Mark Hoppus', 'Travis Barker']
 };
-Vault.set('local', 'someBand', blink182);
+Vault.set('someBand', blink182);
 ```
 
 ### set API
-To set data into web storage, you must use the `set()` API. With this API, there are three ordered arguments, `type`, which denotes the type of Web Storage, `key` for the Object's key, and `value` for the key value:
+To set data into localStorage, you must use the `set()` API. With this API, there are three ordered arguments, `type`, which denotes the type of localStorage, `key` for the Object's key, and `value` for the key value:
 
 ```javascript
 Vault.set(type, key, value);
@@ -27,10 +27,7 @@ Example:
 
 ```javascript
 // localStorage, object key = name, value = 'Tom Delonge'
-Vault.set('local', 'name', 'Tom Delonge');
-
-// sessionStorage, object key = name, value = 'Mark Hoppus'
-Vault.set('session', 'name', 'Mark Hoppus');
+Vault.set('name', 'Tom Delonge');
 ```
 
 ### get API
@@ -45,7 +42,7 @@ Example:
 ```javascript
 // getting 'name' from localStorage
 // returns 'Tom Delonge'
-Vault.get('local', 'name');
+Vault.get('name');
 ```
 
 ### remove API
@@ -59,11 +56,11 @@ Example:
 
 ```javascript
 // removes 'name' from localStorage
-Vault.remove('local', 'name');
+Vault.remove('name');
 ```
 
 ### empty API
-It's a good idea to empty the user's Web Storage when possible to avoid overloading it, there are limits which differ per browser. Specifically modern browsers allow around `5MB` but IE versions are limited. IE8 also supports Web Storage and Vault.
+It's a good idea to empty the user's localStorage when possible to avoid overloading it, there are limits which differ per browser. Specifically modern browsers allow around `5MB` but IE versions are limited. IE8 also supports localStorage and Vault.
 
 ```javascript
 Vault.empty(type);
@@ -90,27 +87,19 @@ Drop your files into your required folders, make sure you're using the files fro
 	<!-- html content above -->
 	<script src="dist/vault.js"></script>
   <script>
-  Vault.set('local', 'name', 'Tom Delonge');
+  Vault.set('name', 'Tom Delonge');
   </script>
 </body>
 ```
 
-## Scaffolding
-Project files and folder structure.
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using Grunt.
 
-```
-├── dist/
-│   ├── vault.js
-│   └── vault.min.js
-├── src/
-│   └── vault.js
-├── .editorconfig
-├── .gitignore
-├── .jshintrc
-├── .travis.yml
-├── Gruntfile.js
-└── package.json
-```
+## Release history
 
-## License
-MIT license
+- 1.1.0
+  - Remove sessionStorage support, localStorage can be cleared upon leaving if necessary
+  - Ditch Web Storage API (set/get/remove) syntax and use native Object lookups for better performance
+  - Add AMD support
+- 1.0.0
+  - Initial release

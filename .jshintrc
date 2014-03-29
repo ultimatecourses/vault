@@ -16,6 +16,7 @@
   "unused": false,
   "trailing": false,
   "globals" : {
-    "Vault": true
+    "Vault": true,
+    "define": true
   }
 }
