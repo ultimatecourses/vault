@@ -1,6 +1,3 @@
-/**
- * Vault.js
- */
 describe('vault', function () {
 
   /**
@@ -11,8 +8,8 @@ describe('vault', function () {
   describe('set()', function () {
 
     beforeEach(function () {
-      Vault.set('localTestStringProp', 'test');
-      Vault.set('localTestObjectProp', { test: 'test' });
+      vault.set('localTestStringProp', 'test');
+      vault.set('localTestObjectProp', { test: 'test' });
     });
 
     it('should add a property to window.localStorage', function () {
@@ -29,12 +26,12 @@ describe('vault', function () {
   describe('get()', function () {
 
     it('should fetch the storage value String', function () {
-      var localString = Vault.get('localTestStringProp');
+      var localString = vault.get('localTestStringProp');
       expect(localString).toBe('test');
     });
 
     it('should fetch the storage value Object by JSON.parse()', function () {
-      var localObject = Vault.get('localTestObjectProp');
+      var localObject = vault.get('localTestObjectProp');
       expect(localObject.test).toBe('test');
     });
 
@@ -47,13 +44,13 @@ describe('vault', function () {
   describe('remove()', function () {
 
     beforeEach(function () {
-      Vault.remove('localTestStringProp');
-      Vault.remove('localTestObjectProp');
+      vault.remove('localTestStringProp');
+      vault.remove('localTestObjectProp');
     });
 
     it('should remove storage properties', function () {
-      expect(Vault.get('localTestStringProp')).not.toBeDefined();
-      expect(Vault.get('localTestObjectProp')).not.toBeDefined();
+      expect(vault.get('localTestStringProp')).not.toBeDefined();
+      expect(vault.get('localTestObjectProp')).not.toBeDefined();
     });
 
   });
@@ -65,14 +62,14 @@ describe('vault', function () {
   describe('empty()', function () {
 
     beforeEach(function () {
-      Vault.set('localTestStringProp', 'test');
-      Vault.set('localTestObjectProp', { test: 'test' });
+      vault.set('localTestStringProp', 'test');
+      vault.set('localTestObjectProp', { test: 'test' });
 
-      Vault.empty('local');
+      vault.empty('local');
     });
 
     it('should clear the storage objects', function () {
-      expect(window.localStorage).toEqual({});
+      expect(window.localStorage.length).toEqual(0);
     });
 
   });

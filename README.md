@@ -1,6 +1,6 @@
-# Vault.js [![Build Status](https://travis-ci.org/toddmotto/vault.png)](https://travis-ci.org/toddmotto/vault)
+# Vault.js [![Build Status](https://travis-ci.org/toddmotto/vault.svg)](https://travis-ci.org/toddmotto/vault)
 
-Vault is a 0.4KB standalone localStorage API with automatic JSON support. By default, localStorage only accepts a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects using JSON parsing. Vault uses a faster Object lookup than the suggested API methods.
+Vault is a 0.4KB standalone `localStorage` API with automatic JSON support. The HTML5 spec permits localStorage to only accept a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects. Vault uses a faster Object lookup than the suggested API methods.
 
 IE8 supports localStorage, therefore Vault can be used with IE8+, but note browser storage limitations in IE8 compared to modern browsers.
 
@@ -13,28 +13,28 @@ var blink182 = {
   formed: 'California',
   members: ['Tom Delonge', 'Mark Hoppus', 'Travis Barker']
 };
-Vault.set('someBand', blink182);
+vault.set('someBand', blink182);
 ```
 
 ### set API
 To set data into localStorage, you must use the `set()` API. With this API, there are three ordered arguments, `type`, which denotes the type of localStorage, `key` for the Object's key, and `value` for the key value:
 
 ```javascript
-Vault.set(type, key, value);
+vault.set(type, key, value);
 ```
 
 Example:
 
 ```javascript
 // localStorage, object key = name, value = 'Tom Delonge'
-Vault.set('name', 'Tom Delonge');
+vault.set('name', 'Tom Delonge');
 ```
 
 ### get API
 Obtaining set data is easy with the `get()` API, simply reference a previously set key with `type` and the `key`:
 
 ```javascript
-Vault.get(type, key);
+vault.get(type, key);
 ```
 
 Example:
@@ -42,34 +42,34 @@ Example:
 ```javascript
 // getting 'name' from localStorage
 // returns 'Tom Delonge'
-Vault.get('name');
+vault.get('name');
 ```
 
 ### remove API
 Removing set data is easy with the `remove()` API, again reference a previously set key with `type` and the `key`:
 
 ```javascript
-Vault.remove(type, key);
+vault.remove(type, key);
 ```
 
 Example:
 
 ```javascript
 // removes 'name' from localStorage
-Vault.remove('name');
+vault.remove('name');
 ```
 
 ### empty API
 It's a good idea to empty the user's localStorage when possible to avoid overloading it, there are limits which differ per browser. Specifically modern browsers allow around `5MB` but IE versions are limited. IE8 also supports localStorage and Vault.
 
 ```javascript
-Vault.empty(type);
+vault.empty(type);
 ```
 
 Example to empty `localStorage`:
 
 ```javascript
-Vault.empty('localStorage');
+vault.empty('localStorage');
 ```
 
 ## Installing with Bower
@@ -87,16 +87,19 @@ Drop your files into your required folders, make sure you're using the files fro
 	<!-- html content above -->
 	<script src="dist/vault.js"></script>
   <script>
-  Vault.set('name', 'Tom Delonge');
+  vault.set('name', 'Tom Delonge');
   </script>
 </body>
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using Grunt.
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using Gulp.
 
 ## Release history
 
+- 1.2.0
+  - Lowercase module definition
+  - Move to Gulp
 - 1.1.0
   - Remove sessionStorage support, localStorage can be cleared upon leaving if necessary
   - Ditch Web Storage API (set/get/remove) syntax and use native Object lookups for better performance
