@@ -29,9 +29,7 @@
   };
 
   vault.empty = function () {
-    for (var key in localStorage) {
-      vault.remove(key);
-    }
+    localStorage.clear();
   };
 
   return vault;
