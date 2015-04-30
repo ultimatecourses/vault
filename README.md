@@ -17,10 +17,10 @@ vault.set('someBand', blink182);
 ```
 
 ### set API
-To set data into localStorage, you must use the `set()` API. With this API, there are three ordered arguments, `type`, which denotes the type of localStorage, `key` for the Object's key, and `value` for the key value:
+To set data into localStorage, you must use the `set()` API. There are two arguments, `key` for the Object's key, and `value` for the key value:
 
 ```javascript
-vault.set(type, key, value);
+vault.set(key, value);
 ```
 
 Example:
@@ -31,10 +31,10 @@ vault.set('name', 'Tom Delonge');
 ```
 
 ### get API
-Obtaining set data is easy with the `get()` API, simply reference a previously set key with `type` and the `key`:
+Obtaining set data is easy with the `get()` API, simply reference a previously set key with `key`:
 
 ```javascript
-vault.get(type, key);
+vault.get(key);
 ```
 
 Example:
@@ -46,10 +46,10 @@ vault.get('name');
 ```
 
 ### remove API
-Removing set data is easy with the `remove()` API, again reference a previously set key with `type` and the `key`:
+Removing set data is easy with the `remove()` API, again reference a previously set key with `key`:
 
 ```javascript
-vault.remove(type, key);
+vault.remove(key);
 ```
 
 Example:
@@ -63,13 +63,7 @@ vault.remove('name');
 It's a good idea to empty the user's localStorage when possible to avoid overloading it, there are limits which differ per browser. Specifically modern browsers allow around `5MB` but IE versions are limited. IE8 also supports localStorage and Vault.
 
 ```javascript
-vault.empty(type);
-```
-
-Example to empty `localStorage`:
-
-```javascript
-vault.empty('localStorage');
+vault.empty();
 ```
 
 ## Installing with Bower
@@ -97,6 +91,9 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release history
 
+- 1.3.0
+  - Fix bug with setting/getting falsy values
+  - Slight restructure to internal API
 - 1.2.0
   - Lowercase module definition
   - Move to Gulp

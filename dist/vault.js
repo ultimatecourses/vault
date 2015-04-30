@@ -1,4 +1,4 @@
-/*! vault.js v1.2.0 | (c) 2014 @toddmotto | https://github.com/toddmotto/vault */
+/*! vault.js v1.3.0 | (c) 2015 @toddmotto | https://github.com/toddmotto/vault */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(factory);
@@ -11,30 +11,28 @@
 
   'use strict';
 
-  var vault = {};
+  var ls = window.localStorage;
 
-  vault.set = function (key, value) {
-    if (!key || !value) return;
-    localStorage[key] = JSON.stringify(value);
-  };
-
-  vault.get = function (key) {
-    var value = localStorage[key];
-    if (!value) return;
-    return JSON.parse(value);
-  };
-
-  vault.remove = function (key) {
-    if (!localStorage[key]) return;
-    delete localStorage[key];
-  };
-
-  vault.empty = function () {
-    for (var key in localStorage) {
-      vault.remove(key);
+  return {
+    set: function (key, value) {
+      if (key && value !== undefined) {
+        ls[key] = JSON.stringify(value);
+      }
+    },
+    get: function (key) {
+      var value = ls[key];
+      if (value !== undefined) {
+        return JSON.parse(value);
+      }
+    },
+    remove: function (key) {
+      if (ls.hasOwnProperty(key)) {
+        delete ls[key];
+      }
+    },
+    empty: function () {
+      ls.clear();
     }
   };
-
-  return vault;
 
 });

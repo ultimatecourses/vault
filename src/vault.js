@@ -10,28 +10,28 @@
 
   'use strict';
 
-  var vault = {};
+  var ls = window.localStorage;
 
-  vault.set = function (key, value) {
-    if (!key || !value) return;
-    localStorage[key] = JSON.stringify(value);
+  return {
+    set: function (key, value) {
+      if (key && value !== undefined) {
+        ls[key] = JSON.stringify(value);
+      }
+    },
+    get: function (key) {
+      var value = ls[key];
+      if (value !== undefined) {
+        return JSON.parse(value);
+      }
+    },
+    remove: function (key) {
+      if (ls.hasOwnProperty(key)) {
+        delete ls[key];
+      }
+    },
+    empty: function () {
+      ls.clear();
+    }
   };
-
-  vault.get = function (key) {
-    var value = localStorage[key];
-    if (!value) return;
-    return JSON.parse(value);
-  };
-
-  vault.remove = function (key) {
-    if (!localStorage[key]) return;
-    delete localStorage[key];
-  };
-
-  vault.empty = function () {
-    localStorage.clear();
-  };
-
-  return vault;
 
 });
