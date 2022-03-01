@@ -124,18 +124,21 @@ const localStorage = new Vault();
 localStorage.removeAll();
 ```
 
-### `onChange(key: string, fn: (e: StorageEvent) => void): void`
+### `onChange(key: string, fn: (e: StorageEvent) => void): () => void`
 
 Listen to the `storage` change event from another tab, which is emitted when any storage value is changed. Here we can specify to only listen to specific property changes:
 
 ```ts
 const localStorage = new Vault();
 
-localStorage.onChange('user', (e: StorageEvent) => {
+const unsubscribe = localStorage.onChange('user', (e: StorageEvent) => {
   // `user` was changed in another tab
   // we could use this new data to sync our UI
   console.log(e);
 });
+
+// remove the event listener when you're ready
+unsubscribe();
 ```
 
 ### Get all values

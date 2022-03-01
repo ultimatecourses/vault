@@ -1,6 +1,6 @@
 {
   "name": "@ultimate/vault",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typed localStorage and sessionStorage utility with data structure and prefix support.",
   "main": "index.js",
   "scripts": {

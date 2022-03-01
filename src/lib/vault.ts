@@ -124,14 +124,13 @@ export class Vault {
    *
    * @param key The key name to listen for, excluding the prefix
    * @param fn Callback function on key's value change
-   * @returns void
+   * @returns function to remove the event listener
    */
-  onChange(key: string, fn: (e: StorageEvent) => void): void {
-    const k = this.getKey(key);
-    window.addEventListener(
-      'storage',
-      (e: StorageEvent) => k === (e as any)[k] && fn(e)
-    );
+  onChange(key: string, fn: (e: StorageEvent) => void): () => void {
+    const prop = this.getKey(key);
+    const onChange = (e: StorageEvent) => prop === (e as any)[prop] && fn(e);
+    window.addEventListener('storage', onChange);
+    return () => window.removeEventListener('storage', onChange);
   }
 }
 

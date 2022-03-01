@@ -128,11 +128,13 @@ var Vault = /** @class */ (function () {
      *
      * @param key The key name to listen for, excluding the prefix
      * @param fn Callback function on key's value change
-     * @returns void
+     * @returns function to remove the event listener
      */
     Vault.prototype.onChange = function (key, fn) {
-        var k = this.getKey(key);
-        window.addEventListener('storage', function (e) { return k === e[k] && fn(e); });
+        var prop = this.getKey(key);
+        var onChange = function (e) { return prop === e[prop] && fn(e); };
+        window.addEventListener('storage', onChange);
+        return function () { return window.removeEventListener('storage', onChange); };
     };
     return Vault;
 }());

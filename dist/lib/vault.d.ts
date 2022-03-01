@@ -73,7 +73,7 @@ export declare class Vault {
      *
      * @param key The key name to listen for, excluding the prefix
      * @param fn Callback function on key's value change
-     * @returns void
+     * @returns function to remove the event listener
      */
-    onChange(key: string, fn: (e: StorageEvent) => void): void;
+    onChange(key: string, fn: (e: StorageEvent) => void): () => void;
 }
