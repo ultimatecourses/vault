@@ -1,23 +1,40 @@
 {
-  "name": "vault.js",
-  "version": "1.3.0",
-  "description": "LocalStorage API with automatic JSON support",
-  "author": "@toddmotto",
+  "name": "@ultimate/vault",
+  "version": "0.0.1",
+  "description": "Typed localStorage and sessionStorage utility with data structure and prefix support.",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc src/*.ts --watch",
+    "copy": "copyfiles package.json README.md dist",
+    "minify": "uglifyjs --compress --mangle --source-map \"url='dist/lib/vault.js.map'\" --output dist/lib/vault.min.js -- dist/lib/vault.js",
+    "lint": "eslint . --ext .ts",
+    "prebuild": "rimraf dist",
+    "build": "npm run lint && tsc --build",
+    "postbuild": "npm run copy && npm run minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ultimatecourses/vault.git"
+  },
+  "keywords": [
+    "localstorage",
+    "sessionstorage",
+    "typescript"
+  ],
+  "author": "ultimatecourses",
   "license": "MIT",
-  "homepage": "https://github.com/toddmotto/vault",
+  "bugs": {
+    "url": "https://github.com/ultimatecourses/vault/issues"
+  },
+  "homepage": "https://github.com/ultimatecourses/vault#readme",
   "devDependencies": {
-    "gulp": "~3.7.0",
-    "gulp-uglify": "~0.3.0",
-    "gulp-rename": "~1.1.0",
-    "gulp-clean": "^0.2.4",
-    "gulp-plumber": "~0.6.2",
-    "gulp-header": "^1.0.2",
-    "gulp-jshint": "^1.6.1",
-    "jshint-stylish": "^0.2.0",
-    "gulp-karma": "0.0.4",
-    "karma": "^0.12.16",
-    "karma-jasmine": "~0.2.0",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "karma-spec-reporter": "0.0.13"
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.10.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5",
+    "uglify-js": "^3.15.2"
   }
 }

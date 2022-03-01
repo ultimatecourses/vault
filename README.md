@@ -1,105 +1,161 @@
-# Vault.js [![Build Status](https://travis-ci.org/toddmotto/vault.svg)](https://travis-ci.org/toddmotto/vault)
+<h1 align="center">
+🔒 @ultimate/vault
+</h1>
+<h4 align="center">
+  <img width="25" valign="middle" src="https://ultimatecourses.com/static/icons/typescript.svg">
+  1KB typed <code>localStorage</code> and <code>sessionStorage</code> utility with data structure and prefix support.
+</h4>
 
-Vault is a 0.4KB standalone `localStorage` API with automatic JSON support. The HTML5 spec permits localStorage to only accept a String as value of an Object property, Vault makes it possible to store entire JavaScript Objects. Vault uses a faster Object lookup than the suggested API methods.
+<a href="https://ultimatecourses.com/courses/javascript" target="_blank">
+  <img src="https://ultimatecourses.com/static/banners/ultimate-javascript-leader.svg">
+</a>
 
-IE8 supports localStorage, therefore Vault can be used with IE8+, but note browser storage limitations in IE8 compared to modern browsers.
+## Installation
 
-### Storing Objects
-Vault allows you to automatically store JavaScript Objects and not just strings (default localStorage behaviour), allowing you to do the following:
+Install via `npm i @ultimate/vault`.
 
-```javascript
-var blink182 = {
-  founded: '1992',
-  formed: 'California',
-  members: ['Tom Delonge', 'Mark Hoppus', 'Travis Barker']
-};
-vault.set('someBand', blink182);
+## Documentation
+
+_ESModule_: Import `Vault` into your TypeScript or JavaScript project and create a new instance:
+
+```ts
+import { Vault } from '@ultimate/vault';
+
+const localStorage = new Vault();
 ```
 
-### set API
-To set data into localStorage, you must use the `set()` API. There are two arguments, `key` for the Object's key, and `value` for the key value:
+_Global_: Access `window.Vault` if you are not using a module system:
 
-```javascript
-vault.set(key, value);
-```
-
-Example:
-
-```javascript
-// localStorage, object key = name, value = 'Tom Delonge'
-vault.set('name', 'Tom Delonge');
-```
-
-### get API
-Obtaining set data is easy with the `get()` API, simply reference a previously set key with `key`:
-
-```javascript
-vault.get(key);
-```
-
-Example:
-
-```javascript
-// getting 'name' from localStorage
-// returns 'Tom Delonge'
-vault.get('name');
-```
-
-### remove API
-Removing set data is easy with the `remove()` API, again reference a previously set key with `key`:
-
-```javascript
-vault.remove(key);
-```
-
-Example:
-
-```javascript
-// removes 'name' from localStorage
-vault.remove('name');
-```
-
-### empty API
-It's a good idea to empty the user's localStorage when possible to avoid overloading it, there are limits which differ per browser. Specifically modern browsers allow around `5MB` but IE versions are limited. IE8 also supports localStorage and Vault.
-
-```javascript
-vault.empty();
-```
-
-## Installing with Bower
-To install Vault into your project using Bower, use the GitHub repository hook:
-
-```
-bower install https://github.com/toddmotto/vault.git
-```
-
-## Manual installation
-Drop your files into your required folders, make sure you're using the files from the `dist` folder, which is the compiled production-ready code. Ensure you place the script before the closing `</body>` tag so the DOM tree is populated when the script runs.
-	
 ```html
-<body>
-	<!-- html content above -->
-	<script src="dist/vault.js"></script>
-  <script>
-  vault.set('name', 'Tom Delonge');
-  </script>
-</body>
+<script src="vault.min.js"></script>
+<script>
+  // implicitly uses localStorage until specified
+const localStorage = new Vault();
+</script>
 ```
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using Gulp.
+### Local or Session Storage
 
-## Release history
+By default `new Vault()` will use `localStorage`. You may specify the type of storage:
 
-- 1.3.0
-  - Fix bug with setting/getting falsy values
-  - Slight restructure to internal API
-- 1.2.0
-  - Lowercase module definition
-  - Move to Gulp
-- 1.1.0
-  - Remove sessionStorage support, localStorage can be cleared upon leaving if necessary
-  - Ditch Web Storage API (set/get/remove) syntax and use native Object lookups for better performance
-  - Add AMD support
-- 1.0.0
-  - Initial release
+```ts
+const localStorage = new Vault({ type: 'local' });
+const sessionStorage = new Vault({ type: 'session' });
+```
+
+As `Vault` is a `class` each instance works independently.
+
+### Key Prefixes
+
+Create a prefix for each `Vault` instance:
+
+```ts
+const localStorage = new Vault({ prefix: 'x9ea45' });
+```
+
+All keys set into storage via this instance will be stored as `x9ea45-<key>`.
+
+### isSupported property
+
+Browser support is IE8+ so this shouldn't be wildly needed, but it's there anyway:
+
+```ts
+const localStorage = new Vault();
+
+if (localStorage.isSupported) {
+  // initialize...
+}
+```
+
+### `set<T>(key: string, value: T): void`
+
+Set a key and value into storage using the typed `set` method:
+
+```ts
+// TypeScript
+const localStorage = new Vault();
+
+interface User {
+  name: string
+}
+
+localStorage.set<User>('user', { name: 'Todd Motto' });
+```
+
+All methods are available to use without TypeScript:
+
+```js
+const localStorage = new Vault();
+
+localStorage.set('user', { name: 'Todd Motto' });
+```
+
+### `get<T>(key: string): T | undefined`
+
+Get a value from storage using the typed `get` method:
+
+```ts
+const localStorage = new Vault();
+
+interface User {
+  name: string
+}
+
+localStorage.get<User>('user');
+```
+
+### `remove(key: string): void`
+
+Remove an item from storage using the `remove` method:
+
+```ts
+const localStorage = new Vault();
+
+localStorage.remove('user');
+```
+
+### `removeAll(): void`
+
+Remove _all_ items from storage:
+
+```ts
+const localStorage = new Vault();
+
+localStorage.removeAll();
+```
+
+### `onChange(key: string, fn: (e: StorageEvent) => void): void`
+
+Listen to the `storage` change event from another tab, which is emitted when any storage value is changed. Here we can specify to only listen to specific property changes:
+
+```ts
+const localStorage = new Vault();
+
+localStorage.onChange('user', (e: StorageEvent) => {
+  // `user` was changed in another tab
+  // we could use this new data to sync our UI
+  console.log(e);
+});
+```
+
+### Get all values
+
+Obtain all storage values by accessing the `value` getter:
+
+```ts
+const localStorage = new Vault();
+
+console.log(localStorage.value); // { "user": "Todd Motto", ... }
+```
+
+Returns an object with all keys and values. Values will remain a `string` type and will need parsing with `JSON.parse()` if you need to access the value.
+
+### Length of Storage
+
+Access how many items are currently in storage with `length`:
+
+```ts
+const localStorage = new Vault();
+
+console.log(localStorage.length); // 3
+```
