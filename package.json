@@ -11,7 +11,7 @@
     "prebuild": "rimraf dist",
     "build": "npm run lint && tsc --build",
     "postbuild": "npm run copy && npm run minify",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -29,12 +29,21 @@
   },
   "homepage": "https://github.com/ultimatecourses/vault#readme",
   "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/jest": "^28.1.6",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
+    "babel-jest": "^28.1.3",
     "copyfiles": "^2.4.1",
     "eslint": "^8.10.0",
+    "jest": "^28.1.3",
     "rimraf": "^3.0.2",
     "typescript": "^4.5.5",
     "uglify-js": "^3.15.2"
+  },
+  "dependencies": {
+    "jest-environment-jsdom": "^28.1.3"
   }
 }

@@ -28,7 +28,7 @@ export class Vault {
   /**
    * Specify a `type` or `prefix` when instantiating
    */
-  constructor(options: VaultOptions) {
+  constructor(options?: VaultOptions) {
     this.options = { ...this.options, ...options };
     /* eslint-disable @typescript-eslint/no-explicit-any */
     this.store = (window as any)[`${this.options.type}Storage`];
@@ -76,6 +76,9 @@ export class Vault {
    * @returns void
    */
   set<T>(key: string, value: T): void {
+    if (typeof value === 'function') {
+      throw new Error(`Cannot set functions to Storage - "${value}"`);
+    }
     try {
       this.store.setItem(this.getKey(key), JSON.stringify(value));
     } catch (e) {
