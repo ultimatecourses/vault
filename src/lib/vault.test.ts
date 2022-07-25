@@ -22,7 +22,7 @@ describe('Initialization', () => {
   });
 });
 
-describe('Storage Types', () => {
+describe('Storage Types and Prefixes', () => {
   test('Defaults to window.localStorage', () => {
     const spy = jest.spyOn(Object.getPrototypeOf(localStorage), 'setItem'); // Storage.prototype
 
@@ -41,6 +41,24 @@ describe('Storage Types', () => {
 
     expect(JSON.parse(sessionStorage.getItem('x') as string)).toEqual('y');
     expect(spy).toHaveBeenCalledWith('x', JSON.stringify('y'));
+  });
+
+  test('Prefixes all Storage set and get', () => {
+    const spy = jest.spyOn(Object.getPrototypeOf(localStorage), 'setItem'); // Storage.prototype
+
+    const vault = new Vault({ prefix: 'x8k0zae' });
+    vault.set('prefix', 1234);
+
+    // raw localStorage
+    expect(JSON.parse(localStorage.getItem('prefix') as string)).toBeNull();
+    expect(
+      JSON.parse(localStorage.getItem('x8k0zae-prefix') as string)
+    ).toEqual(1234);
+    expect(spy).toHaveBeenCalledWith('x8k0zae-prefix', JSON.stringify(1234));
+
+    // vault abstraction
+    expect(vault.get('prefix')).toEqual(1234);
+    expect(vault.get('x8k0zae-prefix')).not.toBeDefined();
   });
 });
 
